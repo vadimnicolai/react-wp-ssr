@@ -1,55 +1,43 @@
-import React, { Component } from "react";
-import Link from "next/link";
-import { Config } from "../config.js";
+import React, { Component, Fragment } from 'react';
+import Link from 'next/link';
+import { Config } from '../config.js';
 
 const linkStyle = {
-    marginRight: 15
+  marginRight: 15
 };
 
 class Menu extends Component {
   constructor() {
-      super();
+    super();
   }
 
   getSlug(url) {
-      const parts = url.split("/");
-      return parts.length > 2 ? parts[parts.length - 2] : "";
+    const parts = url.split('/');
+    return parts.length > 2 ? parts[parts.length - 2] : '';
   }
 
   render() {
-      const menuItems = this.props.menu.items.map((item, index) => {
-        if (item.object === "custom") {
-            return (
-                <Link href={item.url} key={item.ID}>
-                    <a style={linkStyle}>{item.title}</a>
-                </Link>
-            );
-        }
-        const slug = this.getSlug(item.url);
-        const actualPage = item.object === "category" ? "category" : "post";
-        return (
-            <Link
-                as={`/${item.object}/${slug}`}
-                href={`/${actualPage}?slug=${slug}&apiRoute=${item.object}`}
-                key={item.ID}
-            >
-                <a style={linkStyle}>{item.title}</a>
-            </Link>
-        );
+    const { categories } = this.props;
+
+    const menuItems = categories.map(item => {
+      const slug = this.getSlug(item.link);
+
+      return (
+        <Link href={'category/' + slug} key={item.id}>
+          <a style={linkStyle}>{item.name}</a>
+        </Link>
+      );
     });
 
-
-    return(
-      <div>
-          <Link href="/">
-              <a style={linkStyle}>Home</a>
-          </Link>
-          {menuItems}
-      </div>
-    )
+    return (
+      <Fragment>
+        <Link href="/">
+          <a style={linkStyle}>Home</a>
+        </Link>
+        {menuItems}
+      </Fragment>
+    );
   }
-
-
 }
 
 export default Menu;

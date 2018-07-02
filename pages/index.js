@@ -25,7 +25,12 @@ class Index extends Component {
             `${Config.apiUrl}/wp-json/wp/v2/pages?_embed`
         );
         const pages = await pagesRes.json();
-        return { page, posts, pages };
+
+        const categoriesRes = await fetch(
+            `${Config.apiUrl}/wp-json/wp/v2/categories`
+        );
+        const categories = await categoriesRes.json()
+        return { page, posts, pages, categories };
     }
 
     render() {
@@ -59,7 +64,7 @@ class Index extends Component {
         });
         return (
             <Layout>
-                {/* <Menu menu={this.props.headerMenu} /> */}
+                <Menu categories={this.props.categories} />
                 <img
                     src="/static/images/wordpress-plus-react-header.png"
                     width="815"
