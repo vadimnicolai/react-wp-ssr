@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import { withRouter } from 'next/router';
+import _ from 'lodash';
 import Link from 'next/link';
 import { Config } from '../config.js';
 
@@ -12,18 +14,23 @@ class Menu extends Component {
   }
 
   getSlug(url) {
-    const parts = url.split('/');
-    return parts.length > 2 ? parts[parts.length - 2] : '';
+    const [, slug] = url.split('/').reverse();
+
+    return slug;
   }
 
   render() {
     const { categories } = this.props;
+    const {
+      router: { pathname }
+    } = this.props;
 
     const menuItems = categories.map(item => {
       const slug = this.getSlug(item.link);
+      const prefix = pathname == '/category' ? '' : 'category/';
 
       return (
-        <Link href={'category/' + slug} key={item.id}>
+        <Link href={prefix + slug} key={item.id}>
           <a style={linkStyle}>{item.name}</a>
         </Link>
       );
@@ -40,4 +47,4 @@ class Menu extends Component {
   }
 }
 
-export default Menu;
+export default withRouter(Menu);
