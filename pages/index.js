@@ -4,6 +4,7 @@ import fetch from 'isomorphic-unfetch';
 import Link from 'next/link';
 import PageWrapper from '../components/PageWrapper.js';
 import Menu from '../components/Menu.js';
+import FeaturedMedia from '../components/Post/FeaturedMedia';
 import { Config } from '../config.js';
 
 const headerImageStyle = {
@@ -19,40 +20,38 @@ class Index extends Component {
     const page = await pageRes.json();
     const postsRes = await fetch(`${Config.apiUrl}/wp-json/wp/v2/posts?_embed`);
     const posts = await postsRes.json();
-    const pagesRes = await fetch(`${Config.apiUrl}/wp-json/wp/v2/pages?_embed`);
-    const pages = await pagesRes.json();
 
     const categoriesRes = await fetch(
       `${Config.apiUrl}/wp-json/wp/v2/categories`
     );
     const categories = await categoriesRes.json();
-    return { page, posts, pages, categories };
+    return { page, posts, categories };
   }
 
   render() {
     const posts = this.props.posts.map((post, index) => {
+      const { featured_media: featuredMedia } = post;
+      const liStyle = {
+        listStyle: 'none',
+        link: {
+          fontSize: '20px',
+          textDecoration: 'none'
+        }
+      };
+
       return (
-        <ul key={index}>
-          <li>
+        <ul key={index} style={{ padding: '0' }}>
+          <li style={liStyle}>
             <Link
               as={`/posts/${post.slug}`}
               href={`/posts?slug=${post.slug}&apiRoute=posts`}
             >
-              <a>{post.title.rendered}</a>
-            </Link>
-          </li>
-        </ul>
-      );
-    });
-    const pages = this.props.pages.map((page, index) => {
-      return (
-        <ul key={index}>
-          <li>
-            <Link
-              as={`/page/${page.slug}`}
-              href={`/post?slug=${page.slug}&apiRoute=page`}
-            >
-              <a>{page.title.rendered}</a>
+              <a style={liStyle.link}>
+                {post.title.rendered}
+                {featuredMedia ? (
+                  <FeaturedMedia url={Config.apiUrl} id={featuredMedia} />
+                ) : null}
+              </a>
             </Link>
           </li>
         </ul>
@@ -61,16 +60,7 @@ class Index extends Component {
     return (
       <Layout>
         <Menu categories={this.props.categories} />
-        {/* <h1>{this.props.page.title.rendered}</h1> */}
-        {/* <div
-                    dangerouslySetInnerHTML={{
-                        __html: this.props.page.content.rendered
-                    }}
-                /> */}
-        <h2>Posts</h2>
         {posts}
-        <h2>Pages</h2>
-        {pages}
       </Layout>
     );
   }
