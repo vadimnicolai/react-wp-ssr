@@ -1,11 +1,15 @@
 import React, { Component, Fragment } from 'react';
-import { withRouter } from 'next/router';
 import _ from 'lodash';
 import Link from 'next/link';
 import { Config } from '../config.js';
 
 const linkStyle = {
-  marginRight: 15
+  marginRight: 15,
+  color: 'black',
+  fontSize: '22px',
+  fontFamily:
+    '-apple-system, BlinkMacSystemFont,Segoe UI, Roboto, Oxygen, Ubuntu, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
+  textDecoration: 'none'
 };
 
 class Menu extends Component {
@@ -21,16 +25,12 @@ class Menu extends Component {
 
   render() {
     const { categories } = this.props;
-    const {
-      router: { pathname }
-    } = this.props;
 
     const menuItems = categories.map(item => {
       const slug = this.getSlug(item.link);
-      const prefix = pathname == '/category' ? '' : 'category/';
 
       return (
-        <Link href={prefix + slug} key={item.id}>
+        <Link href={{ pathname: '/category/' + slug }} key={item.id}>
           <a style={linkStyle}>{item.name}</a>
         </Link>
       );
@@ -47,4 +47,4 @@ class Menu extends Component {
   }
 }
 
-export default withRouter(Menu);
+export default Menu;

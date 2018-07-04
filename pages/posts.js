@@ -21,8 +21,6 @@ class Post extends Component {
     const categories = await categoriesRes.json();
 
     return { post, categories };
-
-    return { post };
   }
 
   render() {
@@ -30,7 +28,7 @@ class Post extends Component {
 
     return (
       <Layout>
-        {/* <Menu menu={this.props.headerMenu} /> */}
+        <Menu categories={this.props.categories} />
         <h1>{this.props.post.title.rendered}</h1>
         <div
           dangerouslySetInnerHTML={{
