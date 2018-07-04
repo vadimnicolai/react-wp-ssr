@@ -19,7 +19,6 @@ class Category extends Component {
       `${Config.apiUrl}/wp-json/wp/v2/categories`
     );
     const allCategories = await allCategoriesRes.json();
-    console.log('categories.length', categories.length);
 
     if (categories.length > 0) {
       const postsRes = await fetch(
@@ -39,8 +38,8 @@ class Category extends Component {
         <ul key={index}>
           <li>
             <Link
-              as={`/post/${post.slug}`}
-              href={`/post?slug=${post.slug}&apiRoute=post`}
+              as={`/posts/${post.slug}`}
+              href={`/posts?slug=${post.slug}&apiRoute=posts`}
             >
               <a>{post.title.rendered}</a>
             </Link>

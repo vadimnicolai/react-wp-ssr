@@ -15,6 +15,12 @@ class Post extends Component {
       `${Config.apiUrl}/wp-json/wp/v2/${apiRoute}?slug=${slug}`
     );
     const [post] = await res.json();
+    const categoriesRes = await fetch(
+      `${Config.apiUrl}/wp-json/wp/v2/categories`
+    );
+    const categories = await categoriesRes.json();
+
+    return { post, categories };
 
     return { post };
   }
