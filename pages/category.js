@@ -5,24 +5,22 @@ import fetch from 'isomorphic-unfetch';
 import Error from 'next/error';
 import PageWrapper from '../components/PageWrapper.js';
 import Menu from '../components/Menu.js';
-import { Config } from '../config.js';
+import { apiUrl } from '../config.js';
 import { log } from 'util';
 
 class Category extends Component {
   static async getInitialProps(context) {
     const { slug } = context.query;
     const categoriesRes = await fetch(
-      `${Config.apiUrl}/wp-json/wp/v2/categories?slug=${slug}`
+      `${apiUrl}/wp-json/wp/v2/categories?slug=${slug}`
     );
     const categories = await categoriesRes.json();
-    const allCategoriesRes = await fetch(
-      `${Config.apiUrl}/wp-json/wp/v2/categories`
-    );
+    const allCategoriesRes = await fetch(`${apiUrl}/wp-json/wp/v2/categories`);
     const allCategories = await allCategoriesRes.json();
 
     if (categories.length > 0) {
       const postsRes = await fetch(
-        `${Config.apiUrl}/wp-json/wp/v2/posts?categories=${categories[0].id}`
+        `${apiUrl}/wp-json/wp/v2/posts?categories=${categories[0].id}`
       );
       const posts = await postsRes.json();
       return { categories, posts, allCategories };

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import PageWrapper from '../components/PageWrapper.js';
 import Menu from '../components/Menu.js';
 import FeaturedMedia from '../components/Post/FeaturedMedia';
-import { Config: {apiUrl} } from '../config.js';
+import { apiUrl } from '../config.js';
 
 class Index extends Component {
   static async getInitialProps(context) {
@@ -16,9 +16,7 @@ class Index extends Component {
     const postsRes = await fetch(`${apiUrl}/wp-json/wp/v2/posts?_embed`);
     const posts = await postsRes.json();
 
-    const categoriesRes = await fetch(
-      `${apiUrl}/wp-json/wp/v2/categories`
-    );
+    const categoriesRes = await fetch(`${apiUrl}/wp-json/wp/v2/categories`);
     const categories = await categoriesRes.json();
     return { page, posts, categories };
   }
@@ -44,7 +42,7 @@ class Index extends Component {
               <a style={liStyle.link}>
                 {post.title.rendered}
                 {featuredMedia ? (
-                  <FeaturedMedia url={Config.apiUrl} id={featuredMedia} />
+                  <FeaturedMedia url={apiUrl} id={featuredMedia} />
                 ) : null}
               </a>
             </Link>

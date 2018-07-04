@@ -4,21 +4,16 @@ import fetch from 'isomorphic-unfetch';
 import Error from 'next/error';
 import PageWrapper from '../components/PageWrapper.js';
 import Menu from '../components/Menu.js';
-import { Config } from '../config.js';
-import { log } from 'util';
+import { apiUrl } from '../config.js';
 
 class Post extends Component {
   static async getInitialProps(context) {
     const { slug, apiRoute } = context.query;
 
-    const res = await fetch(
-      `${Config.apiUrl}/wp-json/wp/v2/${apiRoute}?slug=${slug}`
-    );
+    const res = await fetch(`${apiUrl}/wp-json/wp/v2/${apiRoute}?slug=${slug}`);
     const [post] = await res.json();
 
-    const categoriesRes = await fetch(
-      `${Config.apiUrl}/wp-json/wp/v2/categories`
-    );
+    const categoriesRes = await fetch(`${apiUrl}/wp-json/wp/v2/categories`);
     const categories = await categoriesRes.json();
 
     return { post, categories };
