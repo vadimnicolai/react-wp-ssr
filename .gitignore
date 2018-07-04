@@ -9,3 +9,4 @@ package-lock.json
 # logs & pids
 *.log
 pids
+config.js

@@ -5,24 +5,19 @@ import Link from 'next/link';
 import PageWrapper from '../components/PageWrapper.js';
 import Menu from '../components/Menu.js';
 import FeaturedMedia from '../components/Post/FeaturedMedia';
-import { Config } from '../config.js';
-
-const headerImageStyle = {
-  marginTop: 50,
-  marginBottom: 50
-};
+import { Config: {apiUrl} } from '../config.js';
 
 class Index extends Component {
   static async getInitialProps(context) {
     const pageRes = await fetch(
-      `${Config.apiUrl}/wp-json/postlight/v1/page?slug=welcome`
+      `${apiUrl}/wp-json/postlight/v1/page?slug=welcome`
     );
     const page = await pageRes.json();
-    const postsRes = await fetch(`${Config.apiUrl}/wp-json/wp/v2/posts?_embed`);
+    const postsRes = await fetch(`${apiUrl}/wp-json/wp/v2/posts?_embed`);
     const posts = await postsRes.json();
 
     const categoriesRes = await fetch(
-      `${Config.apiUrl}/wp-json/wp/v2/categories`
+      `${apiUrl}/wp-json/wp/v2/categories`
     );
     const categories = await categoriesRes.json();
     return { page, posts, categories };
