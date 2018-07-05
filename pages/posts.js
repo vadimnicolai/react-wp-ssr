@@ -4,6 +4,7 @@ import fetch from 'isomorphic-unfetch';
 import Error from 'next/error';
 import PageWrapper from '../components/PageWrapper.js';
 import Menu from '../components/Menu.js';
+import FeaturedMedia from '../components/Post/FeaturedMedia';
 import { apiUrl } from '../config.js';
 
 class Post extends Component {
@@ -21,11 +22,17 @@ class Post extends Component {
 
   render() {
     if (!this.props.post.title) return <Error statusCode={404} />;
+    const {
+      post: { featured_media: featuredMedia }
+    } = this.props;
 
     return (
       <Layout>
         <Menu categories={this.props.categories} />
         <h1>{this.props.post.title.rendered}</h1>
+        {featuredMedia ? (
+          <FeaturedMedia url={apiUrl} id={featuredMedia} />
+        ) : null}
         <div
           dangerouslySetInnerHTML={{
             __html: this.props.post.content.rendered

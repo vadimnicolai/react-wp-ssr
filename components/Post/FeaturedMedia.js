@@ -8,9 +8,9 @@ const img = {
 class FeaturedMedia extends Component {
   constructor() {
     super();
-    state: {
-      sourceUrl: null;
-    }
+    this.state = {
+      sourceUrl: null
+    };
   }
   async componentWillMount() {
     const { id, url } = this.props;
