@@ -5,6 +5,7 @@ import Error from 'next/error';
 import PageWrapper from '../components/PageWrapper.js';
 import Menu from '../components/Menu.js';
 import FeaturedMedia from '../components/Post/FeaturedMedia';
+import Gallery from '../components/Post/Format/Gallery';
 import { apiUrl } from '../config.js';
 
 class Post extends Component {
@@ -21,10 +22,21 @@ class Post extends Component {
   }
 
   render() {
-    if (!this.props.post.title) return <Error statusCode={404} />;
+    if (!this.props.post.title && !this.props.post.content) return null;
+
     const {
-      post: { featured_media: featuredMedia }
+      post: { acf, featured_media: featuredMedia }
     } = this.props;
+
+    const postFormat = () => {
+      switch (acf.postFormat) {
+        case 'gallery': {
+          return <Gallery {...acf} />;
+        }
+        default:
+          return 'state';
+      }
+    };
 
     return (
       <Layout>
@@ -33,11 +45,7 @@ class Post extends Component {
         {featuredMedia ? (
           <FeaturedMedia url={apiUrl} id={featuredMedia} />
         ) : null}
-        <div
-          dangerouslySetInnerHTML={{
-            __html: this.props.post.content.rendered
-          }}
-        />
+        {postFormat()}
       </Layout>
     );
   }
